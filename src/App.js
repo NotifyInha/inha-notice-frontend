@@ -1,40 +1,46 @@
 import React from 'react';
 import {
   ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
   theme,
+  Grid, GridItem, Center
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
+import SearchBar from './SearchBar';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
+      <Grid
+        templateAreas={`"header header"
+                  "SearchBar SearchBar"
+                  "nav main"
+                  "footer footer"`}
+        gridTemplateRows={'50px 1fr 5fr 50px'}
+        gridTemplateColumns={'150px 1fr'}
+        h="100vh"
+        gap="1"
+        color="blackAlpha.700"
+        fontWeight="bold"
+      >
+        <GridItem pl="2" bg="orange.300" area={'header'}>
+          Header
+        </GridItem>
+        <GridItem pl="2" area={'SearchBar'}>
+          <Center h='100%' axis='both'>
+          <SearchBar/>
+          </Center>
+          </GridItem>
+        <GridItem pl="2" bg="pink.300" area={'nav'}>
+          Nav
+        </GridItem>
+        <GridItem pl="2" bg="green.300" area={'main'}>
+          Main
+        </GridItem>
+        <GridItem pl="2" bg="blue.300" area={'footer'}>
+          Footer
+        </GridItem>
+      </Grid>
     </ChakraProvider>
   );
 }
