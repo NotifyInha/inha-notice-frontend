@@ -7,6 +7,8 @@ import {
   Center,
 } from '@chakra-ui/react';
 import SearchBar from './SearchBar';
+import AdvancedSearchBar from './AdvancedSearchBar';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -14,59 +16,50 @@ export default class App extends React.Component {
     this.state = {
       searchResults: [],
       advancedSearch: false,
+      searchQuery: {},
     };
   }
 
   updateData = (target, value) => {
-    this.setState({[target]: value});
+    this.setState({ [target]: value });
   };
-
-
 
   render() {
     return (
       <ChakraProvider theme={theme}>
         <Grid
-          // templateAreas={`"header header"
-          //           "SearchBar SearchBar"
-          //           "nav main"
-          //           "footer footer"`}
           templateRows="50px 1fr 2fr 5fr 50px"
-          templateColumns="150px 1fr"
-          // gridTemplateRows={'50px 1fr 5fr 50px'}
-          // gridTemplateColumns={'150px 1fr'}
           h="100vh"
           gap="1"
           color="blackAlpha.700"
           fontWeight="bold"
         >
-          <GridItem
-            colSpan={2}
-            rowSpan={1}
-            pl={2}
-            bg="orange.300"
-            area={'header'}
-          >
+          <GridItem rowSpan={1} pl={2} bg="orange.300">
             Header
           </GridItem>
-          <GridItem colSpan={2} rowSpan={this.state.advancedSearch ? 2 : 1} pl={2} area={'SearchBar'}>
+          <GridItem rowSpan={1} pl={2}>
             <Center h="100%" axis="both">
-              <SearchBar updateData={this.updateData} advancedSearch={this.state.advancedSearch} />
+              <SearchBar
+                updateData={this.updateData}
+                advancedSearch={this.state.advancedSearch}
+              />
             </Center>
           </GridItem>
-          <GridItem colSpan={1} rowSpan={this.state.advancedSearch ? 1 : 2} pl="2" bg="pink.300" area={'nav'}>
-            Nav
-          </GridItem>
-          <GridItem colSpan={1} rowSpan={this.state.advancedSearch ? 1 : 2} pl="2" bg="green.300" area={'main'}>
+          {this.state.advancedSearch && (
+            <GridItem rowSpan={1} pl={2}>
+              <Center h="100%" axis="both">
+                <AdvancedSearchBar/>
+              </Center>
+            </GridItem>
+          )}
+          <GridItem
+            rowSpan={this.state.advancedSearch ? 1 : 2}
+            pl="2"
+            bg="green.300"
+          >
             Main
           </GridItem>
-          <GridItem
-            colSpan={2}
-            rowSpan={1}
-            pl="2"
-            bg="blue.300"
-            area={'footer'}
-          >
+          <GridItem rowSpan={1} pl="2" bg="blue.300">
             Footer
           </GridItem>
         </Grid>
