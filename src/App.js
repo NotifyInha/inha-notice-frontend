@@ -16,12 +16,21 @@ export default class App extends React.Component {
     this.state = {
       searchResults: [],
       advancedSearch: false,
-      searchQuery: {},
+      searchQuery: { major: [], date: [new Date(), new Date()]},
     };
   }
 
   updateData = (target, value) => {
     this.setState({ [target]: value });
+  };
+
+  updateQuery = (target, value) => {
+    this.setState(prevState => ({
+      searchQuery: {
+        ...prevState.searchQuery,
+        [target]: value,
+      },
+    }));
   };
 
   render() {
@@ -48,7 +57,7 @@ export default class App extends React.Component {
           {this.state.advancedSearch && (
             <GridItem rowSpan={1} pl={2}>
               <Center h="100%" axis="both">
-                <AdvancedSearchBar/>
+                <AdvancedSearchBar updateQuery = {this.updateQuery} majors={this.state.searchQuery.major} dates={this.state.searchQuery.date}/>
               </Center>
             </GridItem>
           )}
