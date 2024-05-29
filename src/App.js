@@ -16,7 +16,7 @@ export default class App extends React.Component {
     this.state = {
       searchResults: [],
       advancedSearch: false,
-      searchQuery: { major: [], date: [new Date(), new Date()]},
+      searchQuery: { major: [], date: [new Date() - 7, new Date()], sourcefilter: 0b00000000000111},
     };
   }
 
@@ -57,7 +57,7 @@ export default class App extends React.Component {
           {this.state.advancedSearch && (
             <GridItem rowSpan={1} pl={2}>
               <Center h="100%" axis="both">
-                <AdvancedSearchBar updateQuery = {this.updateQuery} majors={this.state.searchQuery.major} dates={this.state.searchQuery.date}/>
+                <AdvancedSearchBar updateQuery = {this.updateQuery} majors={this.state.searchQuery.major} dates={this.state.searchQuery.date} sourcefilter={this.state.searchQuery.sourcefilter}/>
               </Center>
             </GridItem>
           )}

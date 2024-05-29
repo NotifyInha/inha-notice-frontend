@@ -9,10 +9,9 @@ import {
 } from '@chakra-ui/react';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete';
 
-import { RangeDatepicker } from "chakra-dayzed-datepicker";
-  
+import { RangeDatepicker } from 'chakra-dayzed-datepicker';
 
-function MainSiteSelection() {
+function MainSiteSelection({ getSource, updateSource }) {
   return (
     <Stack spacing="2px">
       <Text
@@ -32,6 +31,8 @@ function MainSiteSelection() {
           fontWeight="regular"
           size={'md'}
           color="gray.800"
+          isChecked={getSource(0)}
+          onChange={e => updateSource(0, e.target.checked)}
         >
           전체공지
         </Checkbox>
@@ -41,6 +42,8 @@ function MainSiteSelection() {
           fontWeight="regular"
           size={'md'}
           color="gray.800"
+          isChecked={getSource(1)}
+          onChange={e => updateSource(1, e.target.checked)}
         >
           정석학술정보관
         </Checkbox>
@@ -50,6 +53,8 @@ function MainSiteSelection() {
           fontWeight="regular"
           size={'md'}
           color="gray.800"
+          isChecked={getSource(2)}
+          onChange={e => updateSource(2, e.target.checked)}
         >
           프런티어학부대학
         </Checkbox>
@@ -58,7 +63,7 @@ function MainSiteSelection() {
   );
 }
 
-function CollageSelection() {
+function CollageSelection({ getSource, updateSource }) {
   let collageList = [
     '공과대학',
     '자연과학대학',
@@ -85,7 +90,7 @@ function CollageSelection() {
         단과대학
       </Text>
       <SimpleGrid minChildWidth="180px" spacing="2px">
-        {collageList.map(collage => (
+        {collageList.map((collage, index) => (
           <Checkbox
             key={collage}
             fontFamily="Inter"
@@ -93,6 +98,8 @@ function CollageSelection() {
             fontWeight="regular"
             size={'md'}
             color="gray.800"
+            isChecked={getSource(index + 3)}
+            onChange={e => updateSource(index + 3, e.target.checked)}
           >
             {collage}
           </Checkbox>
@@ -110,7 +117,6 @@ const inputRender = inputProps => {
 function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
   const majors = [
     { label: '자유전공학부', value: 'las' },
-
     { label: '기계공학과', value: 'mech' },
     { label: '항공우주공학과', value: 'aerospace' },
     { label: '조선해양공학과', value: 'naoe' },
@@ -216,22 +222,58 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
   );
 }
 
+function DateSelection({ dates, updateDate }) {
+  return (
+    <Stack>
+      <Text
+        fontFamily="Inter"
+        lineHeight="1.56"
+        fontWeight="regular"
+        fontSize="18px"
+        color="#000000"
+      >
+        날짜
+      </Text>
+      <RangeDatepicker selectedDates={dates} onDateChange={updateDate} />
+    </Stack>
+  );
+}
+
 export default class AdvancedSearchBar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      sourcefilter: props.sourcefilter,
+    };
   }
-  
+
+  updateSourceFilter = (index, value) => {
+    let b = 1 << index;
+    if (value) {
+      const newSourceFilter = this.state.sourcefilter | b;
+      this.setState({ sourcefilter: newSourceFilter });
+      this.props.updateQuery('sourcefilter', newSourceFilter);
+    } else {
+      const newSourceFilter = this.state.sourcefilter & ~b;
+      this.setState({ sourcefilter: newSourceFilter });
+      this.props.updateQuery('sourcefilter', newSourceFilter);
+    }
+  };
+
+  getSourceFilter = index => {
+    let b = 1 << index;
+    return this.state.sourcefilter & b;
+  };
+
   updateMajor = selectedItems => {
     this.props.updateQuery('major', selectedItems);
   };
 
   updateDate = selectedDates => {
     this.props.updateQuery('date', selectedDates);
-  }
+  };
 
   render() {
-    console.log(this.props.majors);
-
     return (
       <Stack
         borderRadius="12px"
@@ -249,8 +291,14 @@ export default class AdvancedSearchBar extends React.Component {
         paddingBottom={4}
         overflow={'auto'}
       >
-        <MainSiteSelection />
-        <CollageSelection />
+        <MainSiteSelection
+          getSource={this.getSourceFilter}
+          updateSource={this.updateSourceFilter}
+        />
+        <CollageSelection
+          getSource={this.getSourceFilter}
+          updateSource={this.updateSourceFilter}
+        />
         <Box w={'30%'} minW={'170px'}>
           <MajorSelection
             selectedmajors={this.props.majors}
@@ -258,11 +306,12 @@ export default class AdvancedSearchBar extends React.Component {
           />
         </Box>
 
-
-      <RangeDatepicker
-        selectedDates={this.props.dates}
-        onDateChange={this.updateDate}
-      />
+        <Box w={'30%'} minW={'170px'}>
+          <DateSelection
+            dates={this.props.dates}
+            updateDate={this.updateDate}
+          />
+        </Box>
       </Stack>
     );
   }
