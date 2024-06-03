@@ -24,13 +24,8 @@ export default class SearchBar extends React.Component {
     return (
       <Flex w="100%">
         <Spacer />
-        <form
-          style={{ width: '100%' }}
-          onSubmit={() => {
-            window.alert('submit');
-          }}
-          action="http://localhost:3000/search"
-          method="get"
+        <Box
+          w={"100%"}
         >
           <Center>
             <Input
@@ -53,7 +48,7 @@ export default class SearchBar extends React.Component {
               w="4.8vmin"
               mr="1.3vw"
               icon={<SearchIcon />}
-              type="submit"
+              onClick={ this.props.search}
             />
             
             <Button
@@ -71,7 +66,7 @@ export default class SearchBar extends React.Component {
               상세검색
             </Button>
           </Center>
-        </form>
+        </Box>
 
         <Spacer />
       </Flex>
