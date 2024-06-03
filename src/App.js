@@ -72,7 +72,7 @@ export default class App extends React.Component {
   };
 
   search = () => {
-    const url = new URL('http://api.inhanotify.kro.kr/api/v1/notices');
+    const url = new URL('https://api.notifyinha.today/v1/notices');
     let query = clone(this.state.searchQuery);
     query.major = query.major.map(major => major.value);
     query.date = query.date.map(date => this.TimeToString(date));
