@@ -9,6 +9,7 @@ import {
 import SearchBar from './SearchBar';
 import AdvancedSearchBar from './AdvancedSearchBar';
 import ResultTable from './ResultTable';
+import FooterSection from './FooterSection';
 
 function clone(obj) {
   var res = {};
@@ -84,9 +85,7 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         const totalPage = Math.ceil(data.total / this.state.size);
-        this.setState(
-          { searchResults: data.items, totalPage: totalPage }
-        );
+        this.setState({ searchResults: data.items, totalPage: totalPage });
       });
   };
 
@@ -95,7 +94,7 @@ export default class App extends React.Component {
       <ChakraProvider theme={theme}>
         <Grid
           templateRows="50px 1fr 2fr 5fr 50px"
-          minH={"100vh"}
+          minH={'100vh'}
           gap="1"
           color="blackAlpha.700"
           fontWeight="bold"
@@ -132,8 +131,8 @@ export default class App extends React.Component {
               updatePage={this.updatePage}
             />
           </GridItem>
-          <GridItem rowSpan={1} pl="2" bg="blue.300">
-            Footer
+          <GridItem rowSpan={1} pl="2">
+            <FooterSection/>
           </GridItem>
         </Grid>
       </ChakraProvider>
