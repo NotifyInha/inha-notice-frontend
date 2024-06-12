@@ -6,10 +6,8 @@ import {
   Stack,
   Text,
   Flex,
-  Tag,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { ReactNode } from 'react';
 
 const Logo = props => {
   return (
@@ -103,7 +101,7 @@ export default function FooterSection() {
         </Flex>
         {/* make Text Centered */}
         <Box py={5}>
-        <Text color={'gray.200'} textAlign={'center'}>
+        <Text color={'gray.400'} textAlign={'center'}>
           본 사이트의 모든 공지사항은 인하대학교 및 관련 기관에서 게시한 내용을
           수집한 것입니다. 공지사항의 저작권은 해당 기관에 있으며, NotifyInha는
           이에 대한 책임을 지지 않습니다.
