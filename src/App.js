@@ -144,7 +144,7 @@ export default class App extends React.Component {
               pt={'0'}
               overflow="hidden"
               ref={this.boxRef}
-              style={{ transition: 'height 0.5s ease' }}
+              style={{ transition: 'height 0.3s ease' }}
             >
               <Center axis="both" h={'100%'} pb={2}>
                 <AdvancedSearchBar
