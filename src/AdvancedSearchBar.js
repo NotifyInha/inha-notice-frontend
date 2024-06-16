@@ -6,6 +6,7 @@ import {
   Text,
   Checkbox,
   SimpleGrid,
+  color,
 } from '@chakra-ui/react';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete';
 
@@ -15,44 +16,40 @@ function MainSiteSelection({ getSource, updateSource }) {
   return (
     <Stack spacing="2px">
       <Text
-        fontFamily="Inter"
         lineHeight="1.56"
         fontWeight="regular"
         fontSize="18px"
-        color="#000000"
+        color="palette.main"
       >
         주요 사이트
       </Text>
 
-      <SimpleGrid minChildWidth="180px" spacing="2px">
+      <SimpleGrid columns={{ base: 2, sm: 2, md: 2, lg: 5 }} spacing="2px">
         <Checkbox
-          fontFamily="Inter"
           lineHeight="1.43"
           fontWeight="regular"
           size={'md'}
-          color="gray.800"
+          color="palette.main"
           isChecked={getSource(0)}
           onChange={e => updateSource(0, e.target.checked)}
         >
           전체공지
         </Checkbox>
         <Checkbox
-          fontFamily="Inter"
           lineHeight="1.43"
           fontWeight="regular"
           size={'md'}
-          color="gray.800"
+          color="palette.main"
           isChecked={getSource(1)}
           onChange={e => updateSource(1, e.target.checked)}
         >
           정석학술정보관
         </Checkbox>
         <Checkbox
-          fontFamily="Inter"
           lineHeight="1.43"
           fontWeight="regular"
           size={'md'}
-          color="gray.800"
+          color="palette.main"
           isChecked={getSource(2)}
           onChange={e => updateSource(2, e.target.checked)}
         >
@@ -81,23 +78,21 @@ function CollageSelection({ getSource, updateSource }) {
   return (
     <Stack spacing="2px">
       <Text
-        fontFamily="Inter"
         lineHeight="1.56"
         fontWeight="regular"
         fontSize="18px"
-        color="#000000"
+        color="palette.main"
       >
         단과대학
       </Text>
-      <SimpleGrid minChildWidth="180px" spacing="2px">
+      <SimpleGrid columns={{ base: 2, sm: 2, md: 2, lg: 5 }} spacing="2px">
         {collageList.map((collage, index) => (
           <Checkbox
             key={collage}
-            fontFamily="Inter"
             lineHeight="1.43"
             fontWeight="regular"
             size={'md'}
-            color="gray.800"
+            color="palette.main"
             isChecked={getSource(index + 3)}
             onChange={e => updateSource(index + 3, e.target.checked)}
           >
@@ -116,7 +111,6 @@ const inputRender = inputProps => {
 
 function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
   const majors = [
-
     { label: '자유전공학부', value: '자유전공학부' },
 
     { label: '기계공학과', value: '기계공학과' },
@@ -142,20 +136,20 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
     { label: '물리학과', value: '물리학과' },
     { label: '화학과', value: '화학과' },
     { label: '식품영양학과', value: '식품영양학과' },
-    
+
     { label: '경영학과', value: '경영학과' },
     { label: '글로벌금융학과', value: '글로벌금융학과' },
     { label: '아태물류학부', value: '아태물류학부' },
     { label: '국제통상학과', value: '국제통상학과' },
     { label: '기후위기대응(융합전공)', value: '기후위기대응(융합전공)' },
-    
+
     { label: '국어교육과', value: '국어교육과' },
     { label: '영어교육과', value: '영어교육과' },
     { label: '사회교육과', value: '사회교육과' },
     { label: '교육학과', value: '교육학과' },
     { label: '체육교육과', value: '체육교육과' },
     { label: '수학교육과', value: '수학교육과' },
-    
+
     { label: '행정학과', value: '행정학과' },
     { label: '정치외교학과', value: '정치외교학과' },
     { label: '미디어커뮤니케이션학과', value: '미디어커뮤니케이션학과' },
@@ -164,7 +158,7 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
     { label: '아동심리학과', value: '아동심리학과' },
     { label: '사회복지학과', value: '사회복지학과' },
     { label: '기후위기대응(융합전공)', value: '기후위기대응(융합전공)' },
-    
+
     { label: '한국어문학과', value: '한국어문학과' },
     { label: '사학과', value: '사학과' },
     { label: '철학과', value: '철학과' },
@@ -173,17 +167,17 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
     { label: '영어영문학과', value: '영어영문학과' },
     { label: '프랑스언어문화학과', value: '프랑스언어문화학과' },
     { label: '문화콘텐츠문화경영학과', value: '문화콘텐츠문화경영학과' },
-    
+
     { label: '의예과', value: '의예과' },
     { label: '의학과', value: '의학과' },
     { label: '간호학과', value: '간호학과' },
-    
+
     { label: '조형예술학과', value: '조형예술학과' },
     { label: '스포츠과학과', value: '스포츠과학과' },
     { label: '연극영화학과', value: '연극영화학과' },
     { label: '의류디자인학과', value: '의류디자인학과' },
     { label: '국제학부', value: '국제학부' },
-    
+
     { label: '인공지능공학과', value: '인공지능공학과' },
     { label: '데이터사이언스학과', value: '데이터사이언스학과' },
     { label: '스마트모빌리티공학과', value: '스마트모빌리티공학과' },
@@ -196,13 +190,12 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
   ];
 
   return (
-    <Stack>
+    <Stack spacing="2px">
       <Text
-        fontFamily="Inter"
-        lineHeight="1.56"
+        
         fontWeight="regular"
         fontSize="18px"
-        color="#000000"
+        color="palette.main"
       >
         전공
       </Text>
@@ -218,7 +211,8 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
         onSelectedItemsChange={changes =>
           onSelectedItemsChange(changes.selectedItems)
         }
-        inputStyleProps={{ w: '30%', minW: '170px' }}
+        
+        inputStyleProps={{ w: '30%', minW: '170px', color: 'palette.main' }}
         listStyleProps={{ maxH: '100px', overflowY: 'scroll' }}
         renderCustomInput={inputRender}
       />
@@ -228,17 +222,26 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
 
 function DateSelection({ dates, updateDate }) {
   return (
-    <Stack>
+    <Stack spacing="2px">
       <Text
-        fontFamily="Inter"
         lineHeight="1.56"
         fontWeight="regular"
         fontSize="18px"
-        color="#000000"
+        color="palette.main"
       >
         날짜
       </Text>
-      <RangeDatepicker selectedDates={dates} onDateChange={updateDate} />
+      <RangeDatepicker
+        selectedDates={dates}
+        onDateChange={updateDate}
+        propsConfigs={{
+          inputProps: {
+            w: '100%',
+            minW: '170px',
+            color: 'palette.main',
+          },
+        }}
+      />
     </Stack>
   );
 }
@@ -285,11 +288,6 @@ export default class AdvancedSearchBar extends React.Component {
     return (
       <Stack
         borderRadius="12px"
-        borderColor="#90CDF4"
-        borderStartWidth="3px"
-        borderEndWidth="3px"
-        borderTopWidth="3px"
-        borderBottomWidth="3px"
         width="52vw"
         height="34vh"
         maxWidth="100%"
@@ -298,6 +296,23 @@ export default class AdvancedSearchBar extends React.Component {
         paddingRight={8}
         paddingBottom={4}
         overflow={'auto'}
+        bgColor={'palette.darkblue'}
+        css={{
+          '&::-webkit-scrollbar': {
+            width: '18px',
+
+            // backgroundColor: 'black'
+          },
+          // '&::-webkit-scrollbar-track': {
+          //   width: '6px',
+          // },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#0353a4',
+            backgroundClip: 'padding-box',
+            border: '5px solid transparent',
+            borderRadius: '24px',
+          },
+        }}
       >
         <MainSiteSelection
           getSource={this.getSourceFilter}

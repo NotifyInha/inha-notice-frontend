@@ -1,15 +1,23 @@
 import React from 'react';
 import {
   ChakraProvider,
-  theme,
   Grid,
   GridItem,
   Center,
+  Image,
+  VStack,
+  Box,
+  Flex,
+  Spacer,
+  Stack,
 } from '@chakra-ui/react';
 import SearchBar from './SearchBar';
 import AdvancedSearchBar from './AdvancedSearchBar';
 import ResultTable from './ResultTable';
 import FooterSection from './FooterSection';
+import Pagination from './Pagination';
+import theme from './theme';
+import Fonts from './font';
 
 function clone(obj) {
   var res = {};
@@ -26,9 +34,10 @@ export default class App extends React.Component {
       searchResults: [],
       advancedSearch: false,
       page: 1,
-      size: 10,
+      size: 8,
       totalPage: 1,
       searchQuery: {
+        keyword: '',
         major: [],
         date: [new Date(), new Date()],
         sourcefilter: 0b00000000000111,
@@ -52,7 +61,9 @@ export default class App extends React.Component {
         ...prevState.searchQuery,
         [target]: value,
       },
-    }));
+    }), () => {
+      this.search();
+    });
   };
 
   updatePage = page => {
@@ -80,61 +91,62 @@ export default class App extends React.Component {
     query.page = this.state.page.toString();
     query.size = this.state.size.toString();
     const queryString = new URLSearchParams(query).toString();
-    console.log(url + '?' + queryString);
     fetch(url + '?' + queryString)
       .then(response => response.json())
       .then(data => {
         const totalPage = Math.ceil(data.total / this.state.size);
         this.setState({ searchResults: data.items, totalPage: totalPage });
       });
+    
   };
 
   render() {
     return (
       <ChakraProvider theme={theme}>
-        <Grid
-          templateRows="50px 1fr 2fr 5fr 50px"
-          minH={'100vh'}
-          gap="1"
-          color="blackAlpha.700"
-          fontWeight="bold"
-        >
-          <GridItem rowSpan={1} pl={2} bg="orange.300">
-            Header
-          </GridItem>
-          <GridItem rowSpan={1} pl={2}>
-            <Center h="100%" axis="both">
+        <Fonts />
+        <VStack spacing={'30px'}>
+          <Spacer/>
+          <Box>
+            <Center>
+              <Image src="./logo.svg" w={'260px'} />
+            </Center>
+          </Box>
+          <Box w={'80vw'}>
+            <Box bg="searchbar.background" p={2} borderTopRadius="1rem">
               <SearchBar
+                updateQuery={this.updateQuery}
                 updateData={this.updateData}
                 advancedSearch={this.state.advancedSearch}
                 search={this.search}
               />
-            </Center>
-          </GridItem>
-          {this.state.advancedSearch && (
-            <GridItem rowSpan={1} pl={2}>
-              <Center h="100%" axis="both">
-                <AdvancedSearchBar
-                  updateQuery={this.updateQuery}
-                  majors={this.state.searchQuery.major}
-                  dates={this.state.searchQuery.date}
-                  sourcefilter={this.state.searchQuery.sourcefilter}
-                />
-              </Center>
-            </GridItem>
-          )}
-          <GridItem rowSpan={this.state.advancedSearch ? 1 : 2} pl="2">
-            <ResultTable
-              searchResults={this.state.searchResults}
-              page={this.state.page}
-              totalPage={this.state.totalPage}
-              updatePage={this.updatePage}
-            />
-          </GridItem>
-          <GridItem rowSpan={1} pl="2">
-            <FooterSection/>
-          </GridItem>
-        </Grid>
+              {this.state.advancedSearch && (
+                <Center h="100%" axis="both" mt={2}>
+                  <AdvancedSearchBar
+                    updateQuery={this.updateQuery}
+                    majors={this.state.searchQuery.major}
+                    dates={this.state.searchQuery.date}
+                    sourcefilter={this.state.searchQuery.sourcefilter}
+                  />
+                </Center>
+              )}
+            </Box>
+            <Stack bg="white" p={4} borderBottomRadius="1rem" minH={'60vh'}>
+              <ResultTable
+                searchResults={this.state.searchResults}
+                page={this.state.page}
+                totalPage={this.state.totalPage}
+                updatePage={this.updatePage}
+              />
+
+              <Spacer />
+              <Pagination
+                currentPage={this.state.page}
+                totalPages={this.state.totalPage}
+                onPageChange={this.updatePage}
+              />
+            </Stack>
+          </Box>
+        </VStack>
       </ChakraProvider>
     );
   }
