@@ -28,10 +28,12 @@ export default class SearchBar extends React.Component {
         <Spacer />
         <Box w={'100%'}>
           <Center>
-            <InputGroup size="sm" w={'30%'} minW={'400px'}>
+            <InputGroup size="md" w={'30%'} minW={'400px'}>
               <InputLeftElement
                 pointerEvents="none"
-                children={<SearchIcon color="palette.main" boxSize={4} />}
+                children={
+                  <SearchIcon color="palette.main" boxSize={4} opacity={1} />
+                }
               />
               <Input
                 type="text"
@@ -41,18 +43,25 @@ export default class SearchBar extends React.Component {
                 focusBorderColor="blue.500"
                 border={'none'}
                 color={'palette.main'}
-                size="sm"
-                onChange={e => this.props.updateQuery('keyword', e.target.value)}
+                size="md"
+                _placeholder={{
+                  opacity: 0.8,
+                  color: 'palette.main',
+                  fontWeight: '100',
+                }}
+                onChange={e =>
+                  this.props.updateQuery('keyword', e.target.value)
+                }
               />
               <Button
                 rightIcon={
                   this.props.advancedSearch ? (
                     <Circle bgColor={'palette.darkblue'} size={5}>
-                      <ChevronUpIcon boxSize={4} />
+                      <ChevronUpIcon boxSize={4} color={'palette.main'} />
                     </Circle>
                   ) : (
                     <Circle bgColor={'palette.darkblue'} size={5}>
-                      <ChevronDownIcon boxSize={4} />
+                      <ChevronDownIcon boxSize={4} color={'palette.main'} />
                     </Circle>
                   )
                 }
@@ -61,51 +70,13 @@ export default class SearchBar extends React.Component {
                 borderRightRadius={'full'}
                 minW={'6rem'}
                 onClick={this.updateAdvancedSearch}
-                size="sm"
+                size="md"
+                _hover={{ bg: 'palette.main', color: 'palette.darkblue' }}
               >
                 상세검색
               </Button>
             </InputGroup>
           </Center>
-          {/* <Center>
-            <Input
-              name="keyword"
-              placeholder="검색어를 입력하세요"
-              borderColor={'blue.300'}
-              focusBorderColor="blue.300"
-              size="lg"
-              width="34%"
-              height="4.8vmin"
-              maxWidth="100%"
-              mr="1.3vw"
-              fontSize="2vmin"
-            />
-            <IconButton
-              variant="outline"
-              colorScheme="blue"
-              aria-label="Search database"
-              h="4.8vmin"
-              w="4.8vmin"
-              mr="1.3vw"
-              icon={<SearchIcon />}
-              onClick={ this.props.search}
-            />
-            
-            <Button
-              rightIcon={
-                this.props.advancedSearch ? <ChevronUpIcon /> : <ChevronDownIcon />
-              }
-              colorScheme="blue"
-              variant="solid"
-              size="lg"
-              width="12.5vmin"
-              height="4.8vmin"
-              fontSize="1.5vmin"
-              onClick={this.updateAdvancedSearch}
-            >
-              상세검색
-            </Button>
-          </Center> */}
         </Box>
 
         <Spacer />

@@ -11,7 +11,7 @@ import {
 import SearchBar from './SearchBar';
 import AdvancedSearchBar from './AdvancedSearchBar';
 import ResultTable from './ResultTable';
-// import FooterSection from './FooterSection';
+import FooterSection from './FooterSection';
 import Pagination from './Pagination';
 import theme from './theme';
 import Fonts from './font';
@@ -31,7 +31,7 @@ export default class App extends React.Component {
       searchResults: [],
       advancedSearch: false,
       page: 1,
-      size: 8,
+      size: 10,
       totalPage: 1,
       searchQuery: {
         keyword: '',
@@ -44,23 +44,40 @@ export default class App extends React.Component {
       this.state.searchQuery.date[1].getDate() - 5
     );
     this.search();
+    this.boxRef = React.createRef();
+    this.advancedSearchRef = React.createRef();
   }
 
   componentDidMount() {}
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.advancedSearch !== this.state.advancedSearch) {
+      if (this.state.advancedSearch) {
+        this.boxRef.current.style.height = 'calc(62px + 34vh)';
+      } else {
+        if (this.boxRef.current) {
+          this.boxRef.current.style.height = '0px';
+        }
+      }
+    }
+  }
 
   updateData = (target, value) => {
     this.setState({ [target]: value });
   };
 
   updateQuery = (target, value) => {
-    this.setState(prevState => ({
-      searchQuery: {
-        ...prevState.searchQuery,
-        [target]: value,
-      },
-    }), () => {
-      this.search();
-    });
+    this.setState(
+      prevState => ({
+        searchQuery: {
+          ...prevState.searchQuery,
+          [target]: value,
+        },
+      }),
+      () => {
+        this.search();
+      }
+    );
   };
 
   updatePage = page => {
@@ -94,7 +111,6 @@ export default class App extends React.Component {
         const totalPage = Math.ceil(data.total / this.state.size);
         this.setState({ searchResults: data.items, totalPage: totalPage });
       });
-    
   };
 
   render() {
@@ -102,31 +118,45 @@ export default class App extends React.Component {
       <ChakraProvider theme={theme}>
         <Fonts />
         <VStack spacing={'30px'}>
-          <Spacer/>
+          <Spacer />
           <Box>
             <Center>
               <Image src="./logo.svg" w={'260px'} />
             </Center>
           </Box>
           <Box w={'80vw'}>
-            <Box bg="searchbar.background" p={2} borderTopRadius="1rem">
+            <Box
+              bg="searchbar.background"
+              p={2}
+              h={'57px'}
+              borderTopRadius="1rem"
+            >
               <SearchBar
                 updateQuery={this.updateQuery}
                 updateData={this.updateData}
                 advancedSearch={this.state.advancedSearch}
                 search={this.search}
               />
-              {this.state.advancedSearch && (
-                <Center h="100%" axis="both" mt={2}>
-                  <AdvancedSearchBar
-                    updateQuery={this.updateQuery}
-                    majors={this.state.searchQuery.major}
-                    dates={this.state.searchQuery.date}
-                    sourcefilter={this.state.searchQuery.sourcefilter}
-                  />
-                </Center>
-              )}
             </Box>
+            <Box
+              bg="searchbar.background"
+              h={'0px'}
+              pt={'0'}
+              overflow="hidden"
+              ref={this.boxRef}
+              style={{ transition: 'height 0.5s ease' }}
+            >
+              <Center axis="both" h={'100%'} pb={2}>
+                <AdvancedSearchBar
+                  ref={this.advancedSearchRef}
+                  updateQuery={this.updateQuery}
+                  majors={this.state.searchQuery.major}
+                  dates={this.state.searchQuery.date}
+                  sourcefilter={this.state.searchQuery.sourcefilter}
+                />
+              </Center>
+            </Box>
+
             <Stack bg="white" p={4} borderBottomRadius="1rem" minH={'60vh'}>
               <ResultTable
                 searchResults={this.state.searchResults}
@@ -143,6 +173,8 @@ export default class App extends React.Component {
               />
             </Stack>
           </Box>
+          <Box h={'65px'} />
+          <FooterSection />
         </VStack>
       </ChakraProvider>
     );

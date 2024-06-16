@@ -37,80 +37,74 @@ const ListHeader = ({ children }) => {
   );
 };
 
+let ListMaker = ({ title, content }) => {
+  return (
+    <Stack align={'flex-start'} w={'300px'}>
+      <Text fontWeight={'700'} fontSize={'lg'} mb={2} color={'palette.main'}>
+        {title}
+      </Text>
+      <Text fontWeight={'300'} color={'palette.main'} opacity={'0.8'}>
+        {content.map((collage, index) => (
+          <Text>{collage}</Text>
+        ))}
+      </Text>
+    </Stack>
+  );
+};
+
 export default function FooterSection() {
   return (
-    <Box
-      bg={useColorModeValue('gray.50', 'gray.900')}
-      color={useColorModeValue('gray.700', 'gray.200')}
-    >
-      <Container as={Stack} maxW={'6xl'} py={10}>
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
-          <Stack align={'flex-start'}>
-            <ListHeader>About</ListHeader>
-            <Text fontWeight={'300'}>
-              notifyinha는 인하대학교 구성원들에게 유용한 공지사항을 모아서
-              제공하는 서비스입니다.
-            </Text>
-            <Text fontWeight={'300'}>
-              notifyinha를 통해 교내 주요 공지사항을 한눈에 확인하고, 원하는대로
-              필터링 해보세요.
-            </Text>
-          </Stack>
-          <Stack align={'flex-start'}>
-            <ListHeader>Developer Info</ListHeader>
-            <Text fontWeight={'300'}>정명훈</Text>
-            <Text fontWeight={'300'}>소속 : 인하대학교 컴퓨터공학과</Text>
-            <Text fontWeight={'300'}>Email : myeonghun1212@gmail.com</Text>
-          </Stack>
-          <Stack align={'flex-start'}>
-            <ListHeader>Feedback</ListHeader>
-            <Text fontWeight={'300'}>
-              사이트 이용 중 불편한 점이나 개선할 점이 있다면 알려주세요.
-            </Text>
-            <Text fontWeight={'300'}>여러분의 소중한 의견을 기다립니다.</Text>
-            <Link href="https://forms.gle/85sPfctUiJW1kZoa6">
-              피드백 보내기
-            </Link>
-          </Stack>
-          <Stack align={'flex-start'}>
-            <ListHeader>Follow Us</ListHeader>
-            <Link href={'https://github.com/NotifyInha'}>Github</Link>
-            {/* <Link href={"mailto:myeonghun1212@gmail.com"}>Email</Link> */}
-          </Stack>
-        </SimpleGrid>
-      </Container>
-      <Box py={10}>
-        <Flex
-          align={'center'}
-          _before={{
-            content: '""',
-            borderBottom: '1px solid',
-            borderColor: useColorModeValue('gray.200', 'gray.700'),
-            flexGrow: 1,
-            mr: 8,
-          }}
-          _after={{
-            content: '""',
-            borderBottom: '1px solid',
-            borderColor: useColorModeValue('gray.200', 'gray.700'),
-            flexGrow: 1,
-            ml: 8,
-          }}
-        >
-          <Logo />
+    <Stack>
+      <Text pt={6} fontSize={'sm'} textAlign={'center'}>
+        © 2024. Myeonghun All rights reserved.
+      </Text>
+
+      <Box bg={'palette.darkblue'} w={'80vw'} borderTopRadius="1rem">
+        {/* <Container as={Stack} maxW={'6xl'} py={10}> */}
+        <Flex p={10} justifyContent={'space-between'} wrap={'wrap'}>
+          <ListMaker
+            title={'About'}
+            content={[
+              'NotifyInha는 인하대학교의 공지사항을 한눈에 볼 수 있도록 제공하는 서비스입니다.',
+              '공지사항을 효율적으로 관리하고, 놓치지 않도록 도와줍니다.',
+            ]}
+          />
+          <ListMaker
+            title={'Developer Info'}
+            content={[
+              '정명훈',
+              '소속 : 인하대학교 컴퓨터공학과',
+              'Email : myeonghun1212@gmail.com',
+            ]}
+          />
+          <ListMaker
+            title={'Feedback'}
+            content={[
+              '사이트 이용 중 불편한 점이나 개선할 점이 있다면 알려주세요.',
+              '여러분의 소중한 의견을 기다립니다.',
+              <Link href="https://forms.gle/85sPfctUiJW1kZoa6">
+                피드백 보내기
+              </Link>,
+            ]}
+          />
+          <ListMaker
+            title={'Follow Us'}
+            content={[
+              <Link href={'https://github.com/NotifyInha'}>Github</Link>,
+            ]}
+          />
         </Flex>
-        {/* make Text Centered */}
-        <Box py={5}>
-        <Text color={'gray.400'} textAlign={'center'}>
-          본 사이트의 모든 공지사항은 인하대학교 및 관련 기관에서 게시한 내용을
-          수집한 것입니다. 공지사항의 저작권은 해당 기관에 있으며, NotifyInha는
-          이에 대한 책임을 지지 않습니다.
-        </Text>
+        {/* </Container> */}
+        <Box py={10}>
+          {/* make Text Centered */}
+
+          <Text color={'gray.400'} textAlign={'center'}>
+            본 사이트의 모든 공지사항은 인하대학교 및 관련 기관에서 게시한
+            내용을 수집한 것입니다. 공지사항의 저작권은 해당 기관에 있으며,
+            NotifyInha는 이에 대한 책임을 지지 않습니다.
+          </Text>
         </Box>
-        <Text pt={6} fontSize={'sm'} textAlign={'center'}>
-          © 2024. Myeonghun All rights reserved.
-        </Text>
       </Box>
-    </Box>
+    </Stack>
   );
 }
