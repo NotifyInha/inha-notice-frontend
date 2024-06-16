@@ -6,7 +6,6 @@ import {
   Text,
   Checkbox,
   SimpleGrid,
-  color,
 } from '@chakra-ui/react';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete';
 

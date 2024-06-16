@@ -1,20 +1,17 @@
 import React from 'react';
 import {
   ChakraProvider,
-  Grid,
-  GridItem,
   Center,
   Image,
   VStack,
   Box,
-  Flex,
   Spacer,
   Stack,
 } from '@chakra-ui/react';
 import SearchBar from './SearchBar';
 import AdvancedSearchBar from './AdvancedSearchBar';
 import ResultTable from './ResultTable';
-import FooterSection from './FooterSection';
+// import FooterSection from './FooterSection';
 import Pagination from './Pagination';
 import theme from './theme';
 import Fonts from './font';

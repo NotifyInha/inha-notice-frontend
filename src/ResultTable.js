@@ -7,9 +7,6 @@ import {
   Th,
   Td,
   TableContainer,
-  Button,
-  ButtonGroup,
-  Center,
   IconButton,
   Link,
   Flex,
@@ -17,8 +14,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
   ExternalLinkIcon,
 } from '@chakra-ui/icons';
 
@@ -32,7 +27,7 @@ export default class ResultTable extends React.Component {
   };
 
   render() {
-    const { searchResults, page, totalPage } = this.props;
+    const { searchResults } = this.props;
     return (
       <div>
         <TableContainer maxW={'90vw'}>
