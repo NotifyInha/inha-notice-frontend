@@ -9,12 +9,30 @@ import {
   TableContainer,
   Button,
   ButtonGroup,
-  Center
+  Center,
+  IconButton,
+  Link,
+  Flex,
+  Tooltip,
+  Text,
 } from '@chakra-ui/react';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ExternalLinkIcon,
+} from '@chakra-ui/icons';
 
 export default class ResultTable extends React.Component {
+
+  updatePage = page => {
+    if (page < 1 || page > this.props.totalPage) {
+      return;
+    }
+    this.props.updatePage(page);
+  };
+
   render() {
-    const { searchResults, page, totalPage, updatePage } = this.props;
+    const { searchResults, page, totalPage } = this.props;
     return (
       <div>
         <TableContainer maxW={'90vw'}>
@@ -27,29 +45,40 @@ export default class ResultTable extends React.Component {
               </Tr>
             </Thead>
             <Tbody>
-              {searchResults.map((result, index) => (
-                <Tr key={index}>
-                  <Td>{result.source}</Td>
-                  <Td>{result.title}</Td>
-                  <Td>{result.published_date}</Td>
-                </Tr>
-              ))}
+              {searchResults.map((result, index) => {
+                const date = new Date(result.published_date);
+                const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                  weekday: 'short'
+                }).format(date);
+                return (
+                  <Tr key={index}>
+                    <Td>{result.source}</Td>
+                    <Td>
+                      <Flex align="center">
+                        <Text mr={2}>{result.title}</Text>
+                        <Tooltip label="새 탭에서 공지 열기">
+                          <Link href={result.url} isExternal>
+                            <IconButton
+                              icon={<ExternalLinkIcon />}
+                              aria-label="Open link"
+                              variant="ghost"
+                              size="sm"
+                            />
+                          </Link>
+                        </Tooltip>
+                      </Flex>
+                    </Td>
+                    <Td>{formattedDate}</Td>
+                  </Tr>
+                );
+              })}
             </Tbody>
           </Table>
         </TableContainer>
-        <Center>
-          <ButtonGroup>
-            {Array.from({ length: totalPage }, (_, i) => i + 1).map(p => (
-              <Button
-                key={p}
-                onClick={() => updatePage(p)}
-                isActive={p === page}
-              >
-                {p}
-              </Button>
-            ))}
-          </ButtonGroup>
-        </Center>
+        
       </div>
     );
   }
