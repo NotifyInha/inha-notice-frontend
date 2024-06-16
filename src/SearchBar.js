@@ -5,7 +5,6 @@ import {
   Flex,
   Input,
   Button,
-  IconButton,
   Center,
   InputGroup,
   InputLeftElement,

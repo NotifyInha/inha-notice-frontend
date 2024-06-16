@@ -7,9 +7,12 @@ import {
   Th,
   Td,
   TableContainer,
+<<<<<<< HEAD
   Button,
   ButtonGroup,
   Center,
+=======
+>>>>>>> master
   IconButton,
   Link,
   Flex,
@@ -17,8 +20,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 import {
+<<<<<<< HEAD
   ChevronLeftIcon,
   ChevronRightIcon,
+=======
+>>>>>>> master
   ExternalLinkIcon,
 } from '@chakra-ui/icons';
 
@@ -32,7 +38,11 @@ export default class ResultTable extends React.Component {
   };
 
   render() {
+<<<<<<< HEAD
     const { searchResults, page, totalPage } = this.props;
+=======
+    const { searchResults } = this.props;
+>>>>>>> master
     return (
       <div>
         <TableContainer maxW={'90vw'}>
