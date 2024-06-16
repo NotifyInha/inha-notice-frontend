@@ -40,7 +40,7 @@ export default class SearchBar extends React.Component {
                 placeholder="검색하기"
                 borderLeftRadius={'full'}
                 bgColor={'palette.darkblue'}
-                focusBorderColor="blue.500"
+                focusBorderColor="transparent"
                 border={'none'}
                 color={'palette.main'}
                 size="md"
@@ -49,6 +49,7 @@ export default class SearchBar extends React.Component {
                   color: 'palette.main',
                   fontWeight: '100',
                 }}
+                
                 onChange={e =>
                   this.props.updateQuery('keyword', e.target.value)
                 }
@@ -68,7 +69,7 @@ export default class SearchBar extends React.Component {
                 bgColor={'palette.blue'}
                 color={'palette.main'}
                 borderRightRadius={'full'}
-                minW={'6rem'}
+                minW={'7rem'}
                 onClick={this.updateAdvancedSearch}
                 size="md"
                 _hover={{ bg: 'palette.main', color: 'palette.darkblue' }}
