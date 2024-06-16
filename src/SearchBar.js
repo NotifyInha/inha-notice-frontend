@@ -10,7 +10,6 @@ import {
   InputLeftElement,
   Circle,
 } from '@chakra-ui/react';
-// import { GoSearch } from 'react-icons/go';
 import { ChevronUpIcon, ChevronDownIcon, SearchIcon } from '@chakra-ui/icons';
 export default class SearchBar extends React.Component {
   constructor(props) {
