@@ -109,8 +109,20 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         const totalPage = Math.ceil(data.total / this.state.size);
-        this.setState({ searchResults: data.items, totalPage: totalPage });
+        this.setState({ searchResults: data.items, totalPage: totalPage }, ()=>{if (this.state.page > totalPage) this.updatePage(totalPage)});
       });
+  };
+
+  getDetail = async id => {
+    const url = new URL('https://api.notifyinha.today/v1/notices/' + id);
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
 
   render() {
@@ -163,6 +175,7 @@ export default class App extends React.Component {
                 page={this.state.page}
                 totalPage={this.state.totalPage}
                 updatePage={this.updatePage}
+                getDetail={this.getDetail}
               />
 
               <Spacer />

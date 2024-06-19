@@ -10,6 +10,7 @@ const theme = extendTheme({
         main : '#b9d6f2',
         blue : '#0353a4',
         darkblue : '#003559',
+        lightgray : '#e8e8e8',
     }
   },
   styles: {
