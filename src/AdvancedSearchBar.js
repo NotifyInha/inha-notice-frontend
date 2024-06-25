@@ -6,6 +6,9 @@ import {
   Text,
   Checkbox,
   SimpleGrid,
+  Tooltip,
+  Button,
+  Center
 } from '@chakra-ui/react';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete';
 
@@ -190,12 +193,7 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
 
   return (
     <Stack spacing="2px">
-      <Text
-        
-        fontWeight="regular"
-        fontSize="18px"
-        color="palette.main"
-      >
+      <Text fontWeight="regular" fontSize="18px" color="palette.main">
         전공
       </Text>
       <CUIAutoComplete
@@ -210,9 +208,14 @@ function MajorSelection({ selectedmajors, onSelectedItemsChange }) {
         onSelectedItemsChange={changes =>
           onSelectedItemsChange(changes.selectedItems)
         }
-        
-        inputStyleProps={{ w: '30%', minW: '170px', color: 'palette.main' }}
-        listStyleProps={{ maxH: '100px', overflowY: 'scroll' }}
+        inputStyleProps={{
+          w: '30%',
+          minW: '170px',
+          color: 'palette.main',
+          mb: 0,
+          pb: 0,
+        }}
+        listStyleProps={{ maxH: '100px', overflowY: 'scroll', mb: 0, pb: 0 }}
         renderCustomInput={inputRender}
       />
     </Stack>
@@ -241,21 +244,21 @@ function DateSelection({ dates, updateDate }) {
           },
           dayOfMonthBtnProps: {
             defaultBtnProps: {
-              borderColor: "red.300",
+              borderColor: 'red.300',
               _hover: {
                 background: 'blue.400',
-              }
+              },
             },
             isInRangeBtnProps: {
               bg: 'blue.300',
             },
             selectedBtnProps: {
-              background: "palette.main",
+              background: 'palette.main',
             },
             todayBtnProps: {
-              background: "palette.main",
-            }
-          }
+              background: 'palette.main',
+            },
+          },
         }}
       />
     </Stack>
@@ -263,7 +266,6 @@ function DateSelection({ dates, updateDate }) {
 }
 
 export default class AdvancedSearchBar extends React.Component {
-
   updateSourceFilter = (index, value) => {
     let b = 1 << index;
     if (value) {
@@ -344,6 +346,14 @@ export default class AdvancedSearchBar extends React.Component {
             updateDate={this.updateDate}
           />
         </Box>
+
+        <Tooltip label="현재 검색 세부 설정을 url에 저장 후 복사할 수 있습니다.">
+          <Center>
+            <Button onClick={this.props.shareURL} w={'130px'} colorScheme="blue" minH={'30px'} mt={8}>
+              링크 복사
+            </Button>
+          </Center>
+        </Tooltip>
       </Stack>
     );
   }

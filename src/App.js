@@ -264,6 +264,7 @@ class App extends React.Component {
                   majors={this.state.searchQuery.major}
                   dates={this.state.searchQuery.date}
                   sourcefilter={this.state.searchQuery.sourcefilter}
+                  shareURL={this.shareURL}
                 />
               </Center>
             </Box>
@@ -283,11 +284,6 @@ class App extends React.Component {
                 totalPages={this.state.totalPage}
                 onPageChange={this.updatePage}
               />
-              <Tooltip label="현재 검색 세부 설정을 url에 저장 후 복사할 수 있습니다.">
-                <Button onClick={this.shareURL} colorScheme="blue">
-                  공유 링크 복사
-                </Button>
-              </Tooltip>
             </Stack>
           </Box>
           <Box h={'65px'} />
