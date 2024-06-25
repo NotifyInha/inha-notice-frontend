@@ -13,6 +13,7 @@ import {
   Tooltip,
   Text,
   Box,
+  Center,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { tr } from 'date-fns/locale';
@@ -55,62 +56,76 @@ export default class ResultTable extends React.Component {
               </Tr>
             </Thead>
             <Tbody>
-              {searchResults.map((result, index) => {
-                const date = new Date(result.published_date);
-                const formattedDate = new Intl.DateTimeFormat('ko-KR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  weekday: 'short',
-                }).format(date);
-                return (
-                  <React.Fragment key={result._id}>
-                    <Tr
-                      key={index}
-                      onClick={() => this.handleClicked(result._id)}
-                    >
-                      <Td>{result.source}</Td>
-                      <Td>
-                        <Flex align="center">
-                          <Text mr={2}>{result.title}</Text>
-                          <Tooltip label="새 탭에서 공지 열기">
-                            <Link href={result.url} isExternal>
-                              <IconButton
-                                icon={<ExternalLinkIcon />}
-                                aria-label="Open link"
-                                variant="ghost"
-                                size="sm"
-                              />
-                            </Link>
-                          </Tooltip>
-                        </Flex>
-                      </Td>
-                      <Td>{formattedDate}</Td>
-                    </Tr>
-                    {this.state.detail_index == result._id && (
-                      <Tr>
-                        <Td colSpan={3} bgColor={'palette.lightgray'} borderRadius={10}>
-                          <Box whiteSpace={'pre-wrap'}>
-                            <Text overflowWrap={'break-word'}>
-                              {`이미지: ${this.state.detail.images.length}개`}
-                            </Text>
-                          </Box>
-                          <Box whiteSpace={'pre-wrap'} mb={1}>
-                            <Text overflowWrap={'break-word'}>
-                              {`첨부파일: ${this.state.detail.attached.length}개`}
-                            </Text>
-                          </Box>
-                          <Box whiteSpace={'pre-wrap'}>
-                            <Text overflowWrap={'break-word'}>
-                              {this.state.detail.summary}
-                            </Text>
-                          </Box>
+              {searchResults.length === 0 && (
+                <Tr>
+                  <Td colSpan={3}>
+                    <Center>
+                      검색 결과가 없습니다. 다른 필터를 사용해보세요
+                    </Center>
+                  </Td>
+                </Tr>
+              )}
+              {searchResults.length > 0 &&
+                searchResults.map((result, index) => {
+                  const date = new Date(result.published_date);
+                  const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    weekday: 'short',
+                  }).format(date);
+                  return (
+                    <React.Fragment key={result._id}>
+                      <Tr
+                        key={index}
+                        onClick={() => this.handleClicked(result._id)}
+                      >
+                        <Td>{result.source}</Td>
+                        <Td>
+                          <Flex align="center">
+                            <Text mr={2}>{result.title}</Text>
+                            <Tooltip label="새 탭에서 공지 열기">
+                              <Link href={result.url} isExternal>
+                                <IconButton
+                                  icon={<ExternalLinkIcon />}
+                                  aria-label="Open link"
+                                  variant="ghost"
+                                  size="sm"
+                                />
+                              </Link>
+                            </Tooltip>
+                          </Flex>
                         </Td>
+                        <Td>{formattedDate}</Td>
                       </Tr>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+                      {this.state.detail_index == result._id && (
+                        <Tr>
+                          <Td
+                            colSpan={3}
+                            bgColor={'palette.lightgray'}
+                            borderRadius={10}
+                          >
+                            <Box whiteSpace={'pre-wrap'}>
+                              <Text overflowWrap={'break-word'}>
+                                {`이미지: ${this.state.detail.images.length}개`}
+                              </Text>
+                            </Box>
+                            <Box whiteSpace={'pre-wrap'} mb={1}>
+                              <Text overflowWrap={'break-word'}>
+                                {`첨부파일: ${this.state.detail.attached.length}개`}
+                              </Text>
+                            </Box>
+                            <Box whiteSpace={'pre-wrap'}>
+                              <Text overflowWrap={'break-word'}>
+                                {this.state.detail.summary}
+                              </Text>
+                            </Box>
+                          </Td>
+                        </Tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
             </Tbody>
           </Table>
         </TableContainer>

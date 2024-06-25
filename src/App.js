@@ -109,7 +109,7 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         const totalPage = Math.ceil(data.total / this.state.size);
-        this.setState({ searchResults: data.items, totalPage: totalPage }, ()=>{if (this.state.page > totalPage) this.updatePage(totalPage)});
+        this.setState({ searchResults: data.items, totalPage: totalPage }, ()=>{if (totalPage > 0 && this.state.page > totalPage) this.updatePage(totalPage)});
       });
   };
 
