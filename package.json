@@ -10,7 +10,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.5.2",
-    "chakra-dayzed-datepicker": "^0.3.0",
+    "chakra-dayzed-datepicker": "^0.2.10",
     "chakra-ui-autocomplete": "^1.4.5",
     "date-fns": "^3.6.0",
     "dayzed": "^3.2.3",

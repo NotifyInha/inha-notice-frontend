@@ -235,10 +235,27 @@ function DateSelection({ dates, updateDate }) {
         onDateChange={updateDate}
         propsConfigs={{
           inputProps: {
-            w: '100%',
-            minW: '170px',
             color: 'palette.main',
+            borderRadius: '0.4rem',
+            autoComplete: 'false',
           },
+          dayOfMonthBtnProps: {
+            defaultBtnProps: {
+              borderColor: "red.300",
+              _hover: {
+                background: 'blue.400',
+              }
+            },
+            isInRangeBtnProps: {
+              bg: 'blue.300',
+            },
+            selectedBtnProps: {
+              background: "palette.main",
+            },
+            todayBtnProps: {
+              background: "palette.main",
+            }
+          }
         }}
       />
     </Stack>
