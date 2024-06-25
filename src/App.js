@@ -7,7 +7,15 @@ import {
   Box,
   Spacer,
   Stack,
+  Button,
+  useToast,
+  Tooltip
 } from '@chakra-ui/react';
+import {
+  BrowserRouter as Router,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import SearchBar from './SearchBar';
 import AdvancedSearchBar from './AdvancedSearchBar';
 import ResultTable from './ResultTable';
@@ -24,10 +32,29 @@ function clone(obj) {
   return res;
 }
 
-export default class App extends React.Component {
+function encodeState(state) {
+  return encodeURIComponent(JSON.stringify(state));
+}
+
+function decodeState(encodedState) {
+  try {
+    return JSON.parse(decodeURIComponent(encodedState));
+  } catch (error) {
+    console.error('Failed to decode state:', error);
+    return null;
+  }
+}
+
+class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = this.getInitialState();
+    this.boxRef = React.createRef();
+    this.advancedSearchRef = React.createRef();
+  }
+
+  getInitialState() {
+    let res = {
       searchResults: [],
       advancedSearch: false,
       page: 1,
@@ -40,15 +67,43 @@ export default class App extends React.Component {
         sourcefilter: 0b00000000000111,
       },
     };
-    this.state.searchQuery.date[0].setDate(
-      this.state.searchQuery.date[1].getDate() - 5
-    );
-    this.search();
-    this.boxRef = React.createRef();
-    this.advancedSearchRef = React.createRef();
+    res.searchQuery.date[0].setDate(res.searchQuery.date[1].getDate() - 5);
+    return res;
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { location, navigate } = this.props;
+    const params = new URLSearchParams(location.search);
+    const encodedState = params.get('state');
+    if (encodedState) {
+      const decodedState = decodeState(encodedState);
+      if (decodedState) {
+        this.setState(
+          {
+            ...decodedState,
+            searchQuery: {
+              ...this.state.searchQuery,
+              ...decodedState.searchQuery,
+              date: [new Date(), new Date()],
+            },
+          },
+          () => {
+            this.state.searchQuery.date[0].setDate(
+              this.state.searchQuery.date[1].getDate() - 5
+            );
+            this.search();
+          }
+        );
+      } else {
+        // 파싱 실패 시 기본 상태로 초기화
+        this.setState(this.getInitialState(), this.search);
+      }
+    } else {
+      this.search();
+    }
+    this.navigate = navigate;
+    this.updateURL();
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.advancedSearch !== this.state.advancedSearch) {
@@ -76,6 +131,7 @@ export default class App extends React.Component {
       }),
       () => {
         this.search();
+        this.updateURL();
       }
     );
   };
@@ -83,12 +139,14 @@ export default class App extends React.Component {
   updatePage = page => {
     this.setState({ page }, () => {
       this.search();
+      this.updateURL();
     });
   };
 
   updateSize = size => {
     this.setState({ size }, () => {
       this.search();
+      this.updateURL();
     });
   };
 
@@ -109,7 +167,14 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         const totalPage = Math.ceil(data.total / this.state.size);
-        this.setState({ searchResults: data.items, totalPage: totalPage }, ()=>{if (totalPage > 0 && this.state.page > totalPage) this.updatePage(totalPage)});
+        totalPage <= 0
+          ? this.setState({ searchResults: [], totalPage: 1 })
+          : this.setState(
+              { searchResults: data.items, totalPage: totalPage },
+              () => {
+                if (this.state.page > totalPage) this.updatePage(totalPage);
+              }
+            );
       });
   };
 
@@ -123,6 +188,40 @@ export default class App extends React.Component {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+
+  updateURL = () => {
+    let query = clone(this.state.searchQuery);
+    delete query.date;
+    const encodedState = encodeState({
+      searchQuery: query,
+      page: this.state.page,
+      size: this.state.size,
+    });
+    this.navigate(`?state=${encodedState}`, { replace: true });
+  };
+
+  shareURL = () => {
+    const currentURL = window.location.href;
+    navigator.clipboard.writeText(currentURL).then(
+      () => {
+        this.props.toast({
+          title: 'URL이 복사되었습니다.',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
+      },
+      err => {
+        console.error('URL 복사 실패:', err);
+        this.props.toast({
+          title: 'URL 복사에 실패했습니다.',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+        });
+      }
+    );
   };
 
   render() {
@@ -184,6 +283,11 @@ export default class App extends React.Component {
                 totalPages={this.state.totalPage}
                 onPageChange={this.updatePage}
               />
+              <Tooltip label="현재 검색 세부 설정을 url에 저장 후 복사할 수 있습니다.">
+                <Button onClick={this.shareURL} colorScheme="blue">
+                  공유 링크 복사
+                </Button>
+              </Tooltip>
             </Stack>
           </Box>
           <Box h={'65px'} />
@@ -192,4 +296,19 @@ export default class App extends React.Component {
       </ChakraProvider>
     );
   }
+}
+
+function AppWrapper() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const toast = useToast();
+  return <App navigate={navigate} location={location} toast={toast} />;
+}
+
+export default function AppWithRouter() {
+  return (
+    <Router>
+      <AppWrapper />
+    </Router>
+  );
 }

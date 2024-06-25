@@ -6,7 +6,6 @@ import {
   Text,
   Checkbox,
   SimpleGrid,
-  color,
 } from '@chakra-ui/react';
 import { CUIAutoComplete } from 'chakra-ui-autocomplete';
 
@@ -247,21 +246,15 @@ function DateSelection({ dates, updateDate }) {
 }
 
 export default class AdvancedSearchBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sourcefilter: props.sourcefilter,
-    };
-  }
 
   updateSourceFilter = (index, value) => {
     let b = 1 << index;
     if (value) {
-      const newSourceFilter = this.state.sourcefilter | b;
+      const newSourceFilter = this.props.sourcefilter | b;
       this.setState({ sourcefilter: newSourceFilter });
       this.props.updateQuery('sourcefilter', newSourceFilter);
     } else {
-      const newSourceFilter = this.state.sourcefilter & ~b;
+      const newSourceFilter = this.props.sourcefilter & ~b;
       this.setState({ sourcefilter: newSourceFilter });
       this.props.updateQuery('sourcefilter', newSourceFilter);
     }
@@ -269,7 +262,7 @@ export default class AdvancedSearchBar extends React.Component {
 
   getSourceFilter = index => {
     let b = 1 << index;
-    return this.state.sourcefilter & b;
+    return this.props.sourcefilter & b;
   };
 
   updateMajor = selectedItems => {

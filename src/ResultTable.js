@@ -16,7 +16,6 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { tr } from 'date-fns/locale';
 
 export default class ResultTable extends React.Component {
   constructor(props) {
@@ -28,7 +27,7 @@ export default class ResultTable extends React.Component {
   }
 
   handleClicked = async id => {
-    if (this.state.detail_index == id) {
+    if (this.state.detail_index === id) {
       this.setState({
         detail_index: -1,
         detail: null,
@@ -98,7 +97,7 @@ export default class ResultTable extends React.Component {
                         </Td>
                         <Td>{formattedDate}</Td>
                       </Tr>
-                      {this.state.detail_index == result._id && (
+                      {this.state.detail_index === result._id && (
                         <Tr>
                           <Td
                             colSpan={3}
