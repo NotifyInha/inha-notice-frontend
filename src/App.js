@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ChakraProvider,
   Center,
+  AbsoluteCenter,
   Image,
   VStack,
   Box,
@@ -9,7 +10,8 @@ import {
   Stack,
   Button,
   useToast,
-  Tooltip
+  Tooltip,
+  Spinner,
 } from '@chakra-ui/react';
 import {
   BrowserRouter as Router,
@@ -57,6 +59,7 @@ class App extends React.Component {
     let res = {
       searchResults: [],
       advancedSearch: false,
+      loading: false,
       page: 1,
       size: 10,
       totalPage: 1,
@@ -156,6 +159,7 @@ class App extends React.Component {
   };
 
   search = () => {
+    this.state.loading = true;
     const url = new URL('https://api.notifyinha.today/v1/notices');
     let query = clone(this.state.searchQuery);
     query.major = query.major.map(major => major.value);
@@ -166,6 +170,7 @@ class App extends React.Component {
     fetch(url + '?' + queryString)
       .then(response => response.json())
       .then(data => {
+        this.state.loading = false;
         const totalPage = Math.ceil(data.total / this.state.size);
         totalPage <= 0
           ? this.setState({ searchResults: [], totalPage: 1 })
@@ -195,8 +200,6 @@ class App extends React.Component {
     delete query.date;
     const encodedState = encodeState({
       searchQuery: query,
-      page: this.state.page,
-      size: this.state.size,
     });
     this.navigate(`?state=${encodedState}`, { replace: true });
   };
@@ -269,14 +272,27 @@ class App extends React.Component {
               </Center>
             </Box>
 
-            <Stack bg="white" p={4} borderBottomRadius="1rem" minH={'60vh'}>
-              <ResultTable
-                searchResults={this.state.searchResults}
-                page={this.state.page}
-                totalPage={this.state.totalPage}
-                updatePage={this.updatePage}
-                getDetail={this.getDetail}
-              />
+            <Stack
+              bg="white"
+              p={4}
+              borderBottomRadius="1rem"
+              minH={'60vh'}
+              position={'relative'}
+            >
+              {this.state.loading && (
+                <AbsoluteCenter>
+                  <Spinner></Spinner>
+                </AbsoluteCenter>
+              )}
+              {!this.state.loading && (
+                <ResultTable
+                  searchResults={this.state.searchResults}
+                  page={this.state.page}
+                  totalPage={this.state.totalPage}
+                  updatePage={this.updatePage}
+                  getDetail={this.getDetail}
+                />
+              )}
 
               <Spacer />
               <Pagination
