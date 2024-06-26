@@ -66,13 +66,15 @@ export default class ResultTable extends React.Component {
               )}
               {searchResults.length > 0 &&
                 searchResults.map((result, index) => {
-                  const date = new Date(result.published_date);
+                  const date = new Date(result.published_date + 'Z');
+                  const localDate = new Date(date.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone }));
                   const formattedDate = new Intl.DateTimeFormat('ko-KR', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric',
                     weekday: 'short',
-                  }).format(date);
+                    timeZone: 'Asia/Seoul',
+                  }).format(localDate);
                   return (
                     <React.Fragment key={result._id}>
                       <Tr
